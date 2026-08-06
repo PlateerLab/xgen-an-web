@@ -17,7 +17,7 @@ import pytest
 import respx
 import httpx
 
-from an_web.core.engine import ANWebEngine
+from xgen_an_web.core.engine import ANWebEngine
 
 
 SEARCH_HOME_HTML = b"""

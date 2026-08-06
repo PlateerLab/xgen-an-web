@@ -72,14 +72,14 @@ AN-Web은 **처음부터** AI 에이전트 루프를 위해 설계되었습니�
 아래 모든 수치는 **추정이 아닌 실측**입니다 — 동일 호스트·동일 네트워크·동일 성공 기준. 패배도 그대로 공개합니다.
 
 > **방법** — 2026-07-03, Ubuntu 24.04, Python 3.12.3, 16코어.
-> `an-web 0.9.1` vs `playwright 1.61.0` + Chromium 1228 (headless shell).
+> `xgen-an-web 0.9.1` vs `playwright 1.61.0` + Chromium 1228 (headless shell).
 > 성공 = 타이틀 존재 **및** 사이트별 임계치 이상의 body innerText **및** 최소 링크 수 — 동일 기준, 각 엔진 자체 API로 측정. 하네스는 [`benchmarks/`](benchmarks/)에 커밋됨.
 
 ### 리소스 풋프린트
 
 | 지표 | AN-Web | Playwright + Chromium |
 |---|---|---|
-| 설치 단계 | `pip install an-web` | `pip install playwright` **+** `playwright install chromium` |
+| 설치 단계 | `pip install xgen-an-web` | `pip install playwright` **+** `playwright install chromium` |
 | 설치 후 디스크 | **111 MB** | 136 MB (pip) + 646 MB (브라우저) ≈ **782 MB** |
 | 셋업 시 추가 다운로드 | 없음 | 114 MB 브라우저 아카이브 |
 | 콜드 스타트 (엔진+첫 페이지 컨텍스트) | **0.15–0.35초** | 3.3초 |
@@ -111,25 +111,25 @@ AN-Web은 **처음부터** AI 에이전트 루프를 위해 설계되었습니�
 **요구사항:** Python **3.12+** — 그게 전부입니다.
 
 ```bash
-pip install an-web
+pip install xgen-an-web
 ```
 
 > **브라우저가 필요 없습니다.** AN-Web은 Chromium, Chrome, Firefox, WebDriver를
 > 다운로드하거나 요구하지 않습니다. V8 JavaScript 엔진은 `mini-racer` 휠 안에
 > 프리빌트 네이티브 라이브러리로 포함되어 있어 `pip install`이 셋업의 전부입니다
-> (총 ~111 MB). `an-web install` 같은 후속 단계도, apt 패키지도 없습니다.
+> (총 ~111 MB). `xgen-an-web install` 같은 후속 단계도, apt 패키지도 없습니다.
 
 MCP 서버 포함 설치 (Claude Desktop / MCP 클라이언트용):
 
 ```bash
-pip install "an-web[mcp]"     # an-web-mcp 콘솔 스크립트 추가
+pip install "xgen-an-web[mcp]"     # xgen-an-web-mcp 콘솔 스크립트 추가
 ```
 
 소스에서 설치:
 
 ```bash
-git clone https://github.com/CocoRoF/an-web
-cd an-web
+git clone https://github.com/CocoRoF/xgen-an-web
+cd xgen-an-web
 pip install -e .
 
 # 개발 도구 포함 (pytest, ruff, mypy)
@@ -157,7 +157,7 @@ pip install -e ".[dev]"
 ```dockerfile
 # 최소 동작 Dockerfile
 FROM python:3.12-slim
-RUN pip install --no-cache-dir an-web
+RUN pip install --no-cache-dir xgen-an-web
 ```
 
 ---
@@ -168,7 +168,7 @@ RUN pip install --no-cache-dir an-web
 
 ```python
 import asyncio
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def main():
     async with ANWebEngine() as engine:
@@ -229,7 +229,7 @@ ANWebEngine (프로세스 레벨, 비동기 컨텍스트 매니저)
 ```
 
 ```python
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async with ANWebEngine() as engine:
     # 세션(독립적인 브라우저 탭) 생성
@@ -302,7 +302,7 @@ await session.act({
 IDE 자동완성이 되는 명명된 메서드. 리플레이를 위한 도구 히스토리를 자동 기록합니다.
 
 ```python
-from an_web.api import ANWebToolInterface
+from xgen_an_web.api import ANWebToolInterface
 
 async with ANWebEngine() as engine:
     session = await engine.create_session()
@@ -340,7 +340,7 @@ async with ANWebEngine() as engine:
 검증 및 아티팩트 수집 토글이 가능한 직접 함수 호출:
 
 ```python
-from an_web.api import dispatch_tool
+from xgen_an_web.api import dispatch_tool
 
 result = await dispatch_tool(
     {"tool": "navigate", "url": "https://example.com"},
@@ -638,15 +638,15 @@ AN-Web은 자동으로 페이지를 시맨틱 타입으로 분류합니다:
 
 ---
 
-## MCP 서버 — an-web-mcp
+## MCP 서버 — xgen-an-web-mcp
 
 Microsoft의 playwright-mcp 규약을 따르는 MCP 서버를 내장합니다 — Chromium 없이
 같은 계약으로 동작합니다.
 
 ```bash
-uvx --from 'an-web[mcp]' an-web-mcp
+uvx --from 'xgen-an-web[mcp]' xgen-an-web-mcp
 # Claude Code 등록:
-claude mcp add an-web -- uvx --from 'an-web[mcp]' an-web-mcp
+claude mcp add xgen-an-web -- uvx --from 'xgen-an-web[mcp]' xgen-an-web-mcp
 ```
 
 **도구 (13종)**: `browser_navigate`, `browser_navigate_back`, `browser_snapshot`,
@@ -668,7 +668,7 @@ claude mcp add an-web -- uvx --from 'an-web[mcp]' an-web-mcp
 AN-Web은 Anthropic과 OpenAI 두 형식의 도구 스키마를 내장합니다. AI 모델에 직접 전달하세요:
 
 ```python
-from an_web.api import TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI
+from xgen_an_web.api import TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI
 
 # Anthropic Claude
 response = client.messages.create(
@@ -689,8 +689,8 @@ response = client.chat.completions.create(
 
 ```python
 import anthropic
-from an_web import ANWebEngine
-from an_web.api import ANWebToolInterface, TOOLS_FOR_CLAUDE
+from xgen_an_web import ANWebEngine
+from xgen_an_web.api import ANWebToolInterface, TOOLS_FOR_CLAUDE
 
 async def run_agent(task: str):
     client = anthropic.Anthropic()
@@ -737,7 +737,7 @@ async def run_agent(task: str):
 ### 도구 스키마 유틸리티
 
 ```python
-from an_web.api import get_tool_names, get_tool, get_schema
+from xgen_an_web.api import get_tool_names, get_tool, get_schema
 
 get_tool_names()        # ["navigate", "snapshot", "click", "type", ...]
 get_tool("navigate")    # 하나의 도구에 대한 전체 스키마 dict
@@ -754,7 +754,7 @@ AN-Web에는 내장된 안전 제어가 있습니다. 모든 액션은 실행 �
 ### 빠른 프리셋
 
 ```python
-from an_web.policy.rules import PolicyRules
+from xgen_an_web.policy.rules import PolicyRules
 
 # 허용적 (기본값) — 모든 도메인, 120 req/min
 policy = PolicyRules.default()
@@ -769,7 +769,7 @@ policy = PolicyRules.sandboxed(allowed_domains=["example.com", "api.example.com"
 ### 커스텀 정책
 
 ```python
-from an_web.policy.rules import PolicyRules, NavigationScope
+from xgen_an_web.policy.rules import PolicyRules, NavigationScope
 
 policy = PolicyRules(
     allowed_domains=["example.com", "*.example.com"],
@@ -797,7 +797,7 @@ async with ANWebEngine() as engine:
 ### 샌드박스 리소스 제한
 
 ```python
-from an_web.policy.sandbox import Sandbox, SandboxLimits
+from xgen_an_web.policy.sandbox import Sandbox, SandboxLimits
 
 limits = SandboxLimits(
     max_requests=100,
@@ -814,7 +814,7 @@ SandboxLimits.unlimited()   # 제한 없음
 ### 승인 프로세스 (Human-in-the-Loop)
 
 ```python
-from an_web.policy.approvals import ApprovalManager
+from xgen_an_web.policy.approvals import ApprovalManager
 
 approvals = ApprovalManager(auto_approve=False)
 
@@ -830,7 +830,7 @@ approvals.grant_pattern("navigate:https://example.com/*")   # 패턴 기반
 ### 구조화된 로깅
 
 ```python
-from an_web.tracing.logs import get_logger
+from xgen_an_web.tracing.logs import get_logger
 
 logger = get_logger("my_agent", session_id=session.session_id)
 logger.info("로그인 플로우 시작")
@@ -848,7 +848,7 @@ all_logs = logger.get_all()
 모든 도구 호출은 자동으로 아티팩트를 기록합니다. 커스텀 아티팩트도 기록 가능:
 
 ```python
-from an_web.tracing.artifacts import ArtifactCollector
+from xgen_an_web.tracing.artifacts import ArtifactCollector
 
 collector = ArtifactCollector(session_id=session.session_id)
 collector.record_action_trace("navigate", status="ok", url="https://example.com")
@@ -868,7 +868,7 @@ summary       = collector.summary()
 테스트, 디버깅, 회귀 테스트를 위해 액션 시퀀스 기록 및 재생:
 
 ```python
-from an_web.tracing.replay import ReplayTrace, ReplayEngine
+from xgen_an_web.tracing.replay import ReplayTrace, ReplayEngine
 
 # 트레이스 구축
 trace = ReplayTrace.new(session_id="test-1")
@@ -977,7 +977,7 @@ AN-Web은 현대적인 싱글 페이지 애플리케이션을 렌더링할 수 �
 ### 패키지 구조
 
 ```
-an_web/
+xgen_an_web/
 ├── core/         # ANWebEngine, Session, Scheduler, SnapshotManager, PageState
 ├── dom/          # Node/Element/Document, CSS 셀렉터, Mutation, Semantics
 ├── js/           # V8 브릿지, JSRuntime, 호스트 Web API (DOM ↔ V8 브릿지)
@@ -998,8 +998,8 @@ an_web/
 ### 로그인 플로우
 
 ```python
-from an_web import ANWebEngine
-from an_web.api import ANWebToolInterface
+from xgen_an_web import ANWebEngine
+from xgen_an_web.api import ANWebToolInterface
 
 async def login():
     async with ANWebEngine() as engine:
@@ -1025,7 +1025,7 @@ async def login():
 ### 웹 스크래핑
 
 ```python
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def scrape_headlines():
     async with ANWebEngine() as engine:
@@ -1045,7 +1045,7 @@ async def scrape_headlines():
 
 ```python
 import asyncio
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def scrape_url(engine, url):
     session = await engine.create_session()
@@ -1069,7 +1069,7 @@ async def main():
 ### SPA 렌더링 (React / Webpack)
 
 ```python
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def render_spa():
     async with ANWebEngine() as engine:
@@ -1091,8 +1091,8 @@ async def render_spa():
 ### 샌드박스 세션 (정책 적용)
 
 ```python
-from an_web import ANWebEngine
-from an_web.policy.rules import PolicyRules
+from xgen_an_web import ANWebEngine
+from xgen_an_web.policy.rules import PolicyRules
 
 async def safe_browse():
     policy = PolicyRules.sandboxed(allowed_domains=["example.com"])
@@ -1117,7 +1117,7 @@ async def safe_browse():
 pytest
 
 # 커버리지 포함
-pytest --cov=an_web --cov-report=term-missing
+pytest --cov=xgen_an_web --cov-report=term-missing
 
 # 특정 모듈
 pytest tests/unit/dom/ -v
@@ -1146,7 +1146,7 @@ pytest tests/integration/ -v
 
 | 클래스 | 임포트 | 설명 |
 |---|---|---|
-| `ANWebEngine` | `from an_web import ANWebEngine` | 최상위 팩토리. 비동기 컨텍스트 매니저. |
+| `ANWebEngine` | `from xgen_an_web import ANWebEngine` | 최상위 팩토리. 비동기 컨텍스트 매니저. |
 | `Session` | `engine.create_session()`으로 생성 | 브라우저 탭. 쿠키, 스토리지, JS 런타임 소유. |
 
 ### Session 메서드
@@ -1164,23 +1164,23 @@ pytest tests/integration/ -v
 
 | 심볼 | 임포트 | 설명 |
 |---|---|---|
-| `ANWebToolInterface` | `from an_web.api import ANWebToolInterface` | 타입 지정 도구 헬퍼 메서드 |
-| `dispatch_tool()` | `from an_web.api import dispatch_tool` | 저수준 도구 디스패치 |
-| `TOOLS_FOR_CLAUDE` | `from an_web.api import TOOLS_FOR_CLAUDE` | Anthropic 도구 스키마 |
-| `TOOLS_FOR_OPENAI` | `from an_web.api import TOOLS_FOR_OPENAI` | OpenAI 도구 스키마 |
-| `get_tool(name)` | `from an_web.api import get_tool` | 개별 도구 스키마 조회 |
-| `get_tool_names()` | `from an_web.api import get_tool_names` | 모든 도구 이름 목록 |
+| `ANWebToolInterface` | `from xgen_an_web.api import ANWebToolInterface` | 타입 지정 도구 헬퍼 메서드 |
+| `dispatch_tool()` | `from xgen_an_web.api import dispatch_tool` | 저수준 도구 디스패치 |
+| `TOOLS_FOR_CLAUDE` | `from xgen_an_web.api import TOOLS_FOR_CLAUDE` | Anthropic 도구 스키마 |
+| `TOOLS_FOR_OPENAI` | `from xgen_an_web.api import TOOLS_FOR_OPENAI` | OpenAI 도구 스키마 |
+| `get_tool(name)` | `from xgen_an_web.api import get_tool` | 개별 도구 스키마 조회 |
+| `get_tool_names()` | `from xgen_an_web.api import get_tool_names` | 모든 도구 이름 목록 |
 
 ### 정책
 
 | 클래스 | 임포트 | 설명 |
 |---|---|---|
-| `PolicyRules` | `from an_web.policy.rules import PolicyRules` | 도메인/속도/범위 규칙 |
+| `PolicyRules` | `from xgen_an_web.policy.rules import PolicyRules` | 도메인/속도/범위 규칙 |
 | `PolicyRules.default()` | | 허용적 기본값 (120 req/min) |
 | `PolicyRules.strict()` | | 보수적 (30 req/min, 승인 필요) |
 | `PolicyRules.sandboxed(domains)` | | 도메인 잠금 |
-| `Sandbox` | `from an_web.policy.sandbox import Sandbox` | 리소스 제한 강제 |
-| `ApprovalManager` | `from an_web.policy.approvals import ApprovalManager` | Human-in-the-loop |
+| `Sandbox` | `from xgen_an_web.policy.sandbox import Sandbox` | 리소스 제한 강제 |
+| `ApprovalManager` | `from xgen_an_web.policy.approvals import ApprovalManager` | Human-in-the-loop |
 
 ### 데이터 모델
 
@@ -1220,10 +1220,10 @@ Apache-2.0
 ## 기여하기
 
 ```bash
-git clone https://github.com/CocoRoF/an-web
-cd an-web
+git clone https://github.com/CocoRoF/xgen-an-web
+cd xgen-an-web
 pip install -e ".[dev]"
 pytest                    # 1565개 테스트 모두 통과해야 함
-ruff check an_web/        # 린팅
-mypy an_web/              # 타입 체크
+ruff check xgen_an_web/        # 린팅
+mypy xgen_an_web/              # 타입 체크
 ```

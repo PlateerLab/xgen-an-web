@@ -25,8 +25,8 @@ MIN_SEMANTIC_CHILDREN = 10
 
 
 async def main() -> int:
-    from an_web import ANWebEngine
-    from an_web.dom.nodes import Element, TextNode
+    from xgen_an_web import ANWebEngine
+    from xgen_an_web.dom.nodes import Element, TextNode
 
     checks: list[tuple[str, bool]] = []
     failed = False

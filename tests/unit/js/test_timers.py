@@ -4,8 +4,8 @@ from __future__ import annotations
 import asyncio
 import pytest
 
-from an_web.core.scheduler import EventLoopScheduler
-from an_web.js.timers import TimerManager
+from xgen_an_web.core.scheduler import EventLoopScheduler
+from xgen_an_web.js.timers import TimerManager
 
 
 @pytest.fixture

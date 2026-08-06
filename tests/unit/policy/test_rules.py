@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.policy.rules import (
+from xgen_an_web.policy.rules import (
     PolicyRules, PolicyCheckResult, NavigationScope, ViolationType,
 )
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import pytest
-from an_web.tracing.artifacts import (
+from xgen_an_web.tracing.artifacts import (
     Artifact, ArtifactCollector, ArtifactKind,
     _dom_payload, _semantic_payload, _network_request_payload,
     _js_exception_payload, _action_trace_payload, _policy_violation_payload,

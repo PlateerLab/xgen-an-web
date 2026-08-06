@@ -21,10 +21,10 @@ import time
 
 import pytest
 
-from an_web.browser.parser import parse_html
-from an_web.dom.nodes import Element, TextNode
-from an_web.js.host_api import _is_catastrophic_wipe, sync_dom_mutations
-from an_web.js.runtime import JSRuntime
+from xgen_an_web.browser.parser import parse_html
+from xgen_an_web.dom.nodes import Element, TextNode
+from xgen_an_web.js.host_api import _is_catastrophic_wipe, sync_dom_mutations
+from xgen_an_web.js.runtime import JSRuntime
 
 _PAGE = """<html><head><title>Iso Test</title></head><body>
 <h1>Heading</h1>

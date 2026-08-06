@@ -4,11 +4,11 @@ from __future__ import annotations
 import pytest
 from typing import Any
 
-from an_web.api.rpc import (
+from xgen_an_web.api.rpc import (
     dispatch_tool, ANWebToolInterface,
     _parse_tool_call, _normalize_target, _validate_request,
 )
-from an_web.api.models import SemanticTarget
+from xgen_an_web.api.models import SemanticTarget
 
 
 # ── Stubs ─────────────────────────────────────────────────────────────────────
@@ -197,7 +197,7 @@ class TestDispatchFormat:
 class TestDispatchPolicy:
     @pytest.mark.asyncio
     async def test_navigate_blocked_by_policy(self):
-        from an_web.policy.rules import PolicyRules
+        from xgen_an_web.policy.rules import PolicyRules
         session = FakeSession()
         session.policy = PolicyRules(denied_domains=["blocked.example.com"])
         result = await dispatch_tool(
@@ -208,7 +208,7 @@ class TestDispatchPolicy:
 
     @pytest.mark.asyncio
     async def test_non_blocked_domain_passes_policy(self):
-        from an_web.policy.rules import PolicyRules
+        from xgen_an_web.policy.rules import PolicyRules
         session = FakeSession()
         session.policy = PolicyRules(denied_domains=["evil.com"])
         # navigate to safe.com — policy passes, action may fail due to no network but not blocked
@@ -224,7 +224,7 @@ class TestDispatchPolicy:
 class TestDispatchArtifacts:
     @pytest.mark.asyncio
     async def test_artifact_collected_on_success(self):
-        from an_web.tracing.artifacts import ArtifactCollector, ArtifactKind
+        from xgen_an_web.tracing.artifacts import ArtifactCollector, ArtifactKind
         session = FakeSession()
         session.artifacts = ArtifactCollector(session.session_id)
 
@@ -237,7 +237,7 @@ class TestDispatchArtifacts:
 
     @pytest.mark.asyncio
     async def test_no_artifact_when_disabled(self):
-        from an_web.tracing.artifacts import ArtifactCollector
+        from xgen_an_web.tracing.artifacts import ArtifactCollector
         session = FakeSession()
         session.artifacts = ArtifactCollector(session.session_id)
 
@@ -246,7 +246,7 @@ class TestDispatchArtifacts:
 
     @pytest.mark.asyncio
     async def test_artifact_on_failed_dispatch(self):
-        from an_web.tracing.artifacts import ArtifactCollector
+        from xgen_an_web.tracing.artifacts import ArtifactCollector
         session = FakeSession()
         session.artifacts = ArtifactCollector(session.session_id)
 

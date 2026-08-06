@@ -3,7 +3,7 @@ import asyncio
 import time
 import traceback
 
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 SITES = [
     ("example.com", "https://example.com", "h1"),

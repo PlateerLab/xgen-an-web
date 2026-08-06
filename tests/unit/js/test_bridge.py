@@ -1,9 +1,9 @@
-"""Tests for an_web/js/bridge.py — JS<->Python marshalling."""
+"""Tests for xgen_an_web/js/bridge.py — JS<->Python marshalling."""
 from __future__ import annotations
 
 import json
 import pytest
-from an_web.js.bridge import (
+from xgen_an_web.js.bridge import (
     JSError,
     EvalResult,
     py_to_js,
@@ -241,7 +241,7 @@ class TestMakeJsonCallable:
 
 class TestMarshalElement:
     def _make_element(self, tag="div", attrs=None, text=""):
-        from an_web.dom.nodes import Element, TextNode, NodeType
+        from xgen_an_web.dom.nodes import Element, TextNode, NodeType
         el = Element(node_id="n1", tag=tag, attributes=attrs or {})
         if text:
             t = TextNode(node_id="t1", data=text)
@@ -267,7 +267,7 @@ class TestMarshalElement:
         assert result["textContent"] == "Hello World"
 
     def test_children_included(self):
-        from an_web.dom.nodes import Element, TextNode
+        from xgen_an_web.dom.nodes import Element, TextNode
         parent = Element(node_id="p1", tag="div")
         child = Element(node_id="c1", tag="span", attributes={"class": "item"})
         text = TextNode(node_id="t1", data="text")
@@ -292,7 +292,7 @@ class TestMarshalElement:
         assert result["semanticRole"] == "button"
 
     def test_inner_html(self):
-        from an_web.dom.nodes import Element, TextNode
+        from xgen_an_web.dom.nodes import Element, TextNode
         parent = Element(node_id="p1", tag="div")
         child = Element(node_id="c1", tag="span", attributes={"class": "x"})
         text = TextNode(node_id="t1", data="hello")
@@ -314,7 +314,7 @@ class TestMarshalDocument:
         assert result["nodeType"] == 9
 
     def test_real_doc(self):
-        from an_web.browser.parser import parse_html
+        from xgen_an_web.browser.parser import parse_html
         doc = parse_html(
             "<html><head><title>Test Page</title></head><body></body></html>",
             "https://example.com/"

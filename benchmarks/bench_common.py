@@ -1,4 +1,4 @@
-"""Shared scenario definitions + helpers for the an-web vs playwright bench."""
+"""Shared scenario definitions + helpers for the xgen-an-web vs playwright bench."""
 import json
 import os
 import time

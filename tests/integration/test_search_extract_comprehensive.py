@@ -32,10 +32,10 @@ import pytest
 import respx
 import httpx
 
-from an_web.core.engine import ANWebEngine
-from an_web.api.rpc import ANWebToolInterface
-from an_web.api.models import ActionResponse
-from an_web.tracing.artifacts import ArtifactCollector, ArtifactKind
+from xgen_an_web.core.engine import ANWebEngine
+from xgen_an_web.api.rpc import ANWebToolInterface
+from xgen_an_web.api.models import ActionResponse
+from xgen_an_web.tracing.artifacts import ArtifactCollector, ArtifactKind
 
 
 # ── HTML fixtures ──────────────────────────────────────────────────────────────

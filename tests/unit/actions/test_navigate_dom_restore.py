@@ -8,7 +8,7 @@ import threading
 
 import pytest
 
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 FILLER = "server rendered paragraph with plenty of visible text. " * 40
 

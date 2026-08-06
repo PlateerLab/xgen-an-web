@@ -7,7 +7,7 @@ failures are recorded as failures.
 ## Setup
 
 ```bash
-pip install an-web playwright psutil
+pip install xgen-an-web playwright psutil
 playwright install chromium
 ```
 
@@ -29,4 +29,4 @@ title/text/link counts, and an agent-facing snapshot size comparison
 (semantic tree vs aria snapshot).
 
 Published results: 2026-07-03, Ubuntu 24.04, Python 3.12.3,
-an-web 0.8.0 vs playwright 1.61.0 (Chromium 1228 headless shell).
+xgen-an-web 0.8.0 vs playwright 1.61.0 (Chromium 1228 headless shell).

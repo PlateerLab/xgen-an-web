@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.api.tool_schema import (
+from xgen_an_web.api.tool_schema import (
     TOOLS, TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI,
     get_tool, get_tool_names, get_schema,
 )

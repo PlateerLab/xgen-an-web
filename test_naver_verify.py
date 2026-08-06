@@ -17,8 +17,8 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 
 async def main():
-    from an_web import ANWebEngine
-    from an_web.dom.nodes import Element, TextNode
+    from xgen_an_web import ANWebEngine
+    from xgen_an_web.dom.nodes import Element, TextNode
 
     async with ANWebEngine() as engine:
         session = await engine.create_session()

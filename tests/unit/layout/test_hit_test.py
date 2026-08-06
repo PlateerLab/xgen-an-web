@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.nodes import Element, Document
-from an_web.layout.hit_test import (
+from xgen_an_web.dom.nodes import Element, Document
+from xgen_an_web.layout.hit_test import (
     HitTestResult,
     compute_hit_test,
     compute_hit_testable,
@@ -14,7 +14,7 @@ from an_web.layout.hit_test import (
     _get_ancestor_ids,
     _get_depth,
 )
-from an_web.layout import LayoutEngine, ElementAssessment
+from xgen_an_web.layout import LayoutEngine, ElementAssessment
 
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────

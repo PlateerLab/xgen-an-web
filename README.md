@@ -24,7 +24,7 @@ async with ANWebEngine() as engine:
 
 ## Table of Contents
 
-- [Why AN-Web?](#why-an-web)
+- [Why AN-Web?](#why-xgen-an-web)
 - [Benchmarks vs Playwright](#benchmarks-vs-playwright)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
@@ -34,7 +34,7 @@ async with ANWebEngine() as engine:
 - [Semantic Targeting](#semantic-targeting)
 - [Data Extraction](#data-extraction)
 - [PageSemantics — The AI World Model](#pagesemantics--the-ai-world-model)
-- [MCP Server — an-web-mcp](#mcp-server--an-web-mcp)
+- [MCP Server — xgen-an-web-mcp](#mcp-server--xgen-an-web-mcp)
 - [AI Model Integration (Claude / OpenAI)](#ai-model-integration-claude--openai)
 - [Policy & Safety](#policy--safety)
 - [Tracing & Replay](#tracing--replay)
@@ -74,7 +74,7 @@ Every number below was **measured, not estimated** — same host, same network, 
 success criteria for both engines. We publish losses alongside wins.
 
 > **Method** — 2026-07-03, Ubuntu 24.04, Python 3.12.3, 16 cores.
-> `an-web 0.9.1` vs `playwright 1.61.0` + Chromium 1228 (headless shell).
+> `xgen-an-web 0.9.1` vs `playwright 1.61.0` + Chromium 1228 (headless shell).
 > Success = non-empty title **and** body innerText above a per-site threshold
 > **and** a minimum link count — identical criteria, each engine queried
 > through its own API. Harness committed in [`benchmarks/`](benchmarks/).
@@ -83,7 +83,7 @@ success criteria for both engines. We publish losses alongside wins.
 
 | Metric | AN-Web | Playwright + Chromium |
 |---|---|---|
-| Install steps | `pip install an-web` | `pip install playwright` **+** `playwright install chromium` |
+| Install steps | `pip install xgen-an-web` | `pip install playwright` **+** `playwright install chromium` |
 | Disk after install | **111 MB** | 136 MB (pip) + 646 MB (browsers) ≈ **782 MB** |
 | Extra download at setup | none | 114 MB browser archive |
 | Cold start (engine ready + first page context) | **0.15–0.35 s** | 3.3 s |
@@ -118,7 +118,7 @@ by side.
 Reproduce it yourself — the harness is ~120 lines per engine:
 
 ```bash
-pip install an-web playwright psutil && playwright install chromium
+pip install xgen-an-web playwright psutil && playwright install chromium
 python benchmarks/bench_famous.py anweb && python benchmarks/bench_famous.py pw
 ```
 
@@ -132,26 +132,26 @@ Full harness, criteria, and raw-metric collection live in
 **Requires:** Python **3.12+**. That's the whole list.
 
 ```bash
-pip install an-web
+pip install xgen-an-web
 ```
 
 > **No browser needed.** AN-Web does **not** download or depend on Chromium,
 > Chrome, Firefox, or any WebDriver. The V8 JavaScript engine ships *inside*
 > the `mini-racer` wheel as a prebuilt native library — `pip install` is the
-> entire setup, on a ~111 MB total footprint. There is no `an-web install`
+> entire setup, on a ~111 MB total footprint. There is no `xgen-an-web install`
 > post-step, no `PLAYWRIGHT_BROWSERS_PATH`, no apt packages.
 
 With the MCP server (for Claude Desktop / MCP clients):
 
 ```bash
-pip install "an-web[mcp]"     # adds the `an-web-mcp` console script
+pip install "xgen-an-web[mcp]"     # adds the `xgen-an-web-mcp` console script
 ```
 
 Or install from source:
 
 ```bash
-git clone https://github.com/CocoRoF/an-web
-cd an-web
+git clone https://github.com/PlateerLab/xgen-an-web
+cd xgen-an-web
 pip install -e .
 
 # With dev tools (pytest, ruff, mypy)
@@ -161,8 +161,8 @@ pip install -e ".[dev]"
 Using [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv add an-web            # in a project
-uv pip install an-web    # in a venv
+uv add xgen-an-web            # in a project
+uv pip install xgen-an-web    # in a venv
 ```
 
 **Dependencies** (all installed automatically by pip):
@@ -186,7 +186,7 @@ uv pip install an-web    # in a venv
 ```dockerfile
 # Minimal working Dockerfile
 FROM python:3.12-slim
-RUN pip install --no-cache-dir an-web
+RUN pip install --no-cache-dir xgen-an-web
 ```
 
 ---
@@ -197,7 +197,7 @@ RUN pip install --no-cache-dir an-web
 
 ```python
 import asyncio
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def main():
     async with ANWebEngine() as engine:
@@ -258,7 +258,7 @@ ANWebEngine (process-level, async context manager)
 ```
 
 ```python
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async with ANWebEngine() as engine:
     # Create sessions (independent browser tabs)
@@ -331,7 +331,7 @@ await session.act({
 Named methods with IDE autocompletion. Automatically records tool history for replay.
 
 ```python
-from an_web.api import ANWebToolInterface
+from xgen_an_web.api import ANWebToolInterface
 
 async with ANWebEngine() as engine:
     session = await engine.create_session()
@@ -369,7 +369,7 @@ Available methods:
 Direct function call with validation and artifact collection toggles:
 
 ```python
-from an_web.api import dispatch_tool
+from xgen_an_web.api import dispatch_tool
 
 result = await dispatch_tool(
     {"tool": "navigate", "url": "https://example.com"},
@@ -688,7 +688,7 @@ AN-Web automatically classifies pages into semantic types:
 
 ---
 
-## MCP Server — an-web-mcp
+## MCP Server — xgen-an-web-mcp
 
 AN-Web ships an MCP (Model Context Protocol) server with a tool surface
 modelled on Microsoft's playwright-mcp — agents already fluent in that
@@ -696,19 +696,19 @@ contract feel at home, minus the Chromium.
 
 ```bash
 # Run directly
-uvx --from 'an-web[mcp]' an-web-mcp
+uvx --from 'xgen-an-web[mcp]' xgen-an-web-mcp
 
 # Or register with Claude Code
-claude mcp add an-web -- uvx --from 'an-web[mcp]' an-web-mcp
+claude mcp add xgen-an-web -- uvx --from 'xgen-an-web[mcp]' xgen-an-web-mcp
 ```
 
 ```json
 // Claude Desktop / any MCP host
 {
   "mcpServers": {
-    "an-web": {
+    "xgen-an-web": {
       "command": "uvx",
-      "args": ["--from", "an-web[mcp]", "an-web-mcp"]
+      "args": ["--from", "xgen-an-web[mcp]", "xgen-an-web-mcp"]
     }
   }
 }
@@ -749,7 +749,7 @@ Environment configuration:
 AN-Web ships tool schemas in both Anthropic and OpenAI formats. Pass them directly to your AI model:
 
 ```python
-from an_web.api import TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI
+from xgen_an_web.api import TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI
 
 # Anthropic Claude
 response = client.messages.create(
@@ -770,8 +770,8 @@ response = client.chat.completions.create(
 
 ```python
 import anthropic
-from an_web import ANWebEngine
-from an_web.api import ANWebToolInterface, TOOLS_FOR_CLAUDE
+from xgen_an_web import ANWebEngine
+from xgen_an_web.api import ANWebToolInterface, TOOLS_FOR_CLAUDE
 
 async def run_agent(task: str):
     client = anthropic.Anthropic()
@@ -818,7 +818,7 @@ async def run_agent(task: str):
 ### Tool Schema Utilities
 
 ```python
-from an_web.api import get_tool_names, get_tool, get_schema
+from xgen_an_web.api import get_tool_names, get_tool, get_schema
 
 get_tool_names()        # ["navigate", "snapshot", "click", "type", ...]
 get_tool("navigate")    # full schema dict for one tool
@@ -835,7 +835,7 @@ AN-Web has built-in safety controls. Every action is checked by the `PolicyCheck
 ### Quick Presets
 
 ```python
-from an_web.policy.rules import PolicyRules
+from xgen_an_web.policy.rules import PolicyRules
 
 # Permissive (default) — all domains, 120 req/min
 policy = PolicyRules.default()
@@ -850,7 +850,7 @@ policy = PolicyRules.sandboxed(allowed_domains=["example.com", "api.example.com"
 ### Custom Policy
 
 ```python
-from an_web.policy.rules import PolicyRules, NavigationScope
+from xgen_an_web.policy.rules import PolicyRules, NavigationScope
 
 policy = PolicyRules(
     allowed_domains=["example.com", "*.example.com"],
@@ -878,7 +878,7 @@ async with ANWebEngine() as engine:
 ### Sandbox Resource Limits
 
 ```python
-from an_web.policy.sandbox import Sandbox, SandboxLimits
+from xgen_an_web.policy.sandbox import Sandbox, SandboxLimits
 
 limits = SandboxLimits(
     max_requests=100,
@@ -895,7 +895,7 @@ SandboxLimits.unlimited()   # no limits
 ### Approval Flows (Human-in-the-Loop)
 
 ```python
-from an_web.policy.approvals import ApprovalManager
+from xgen_an_web.policy.approvals import ApprovalManager
 
 approvals = ApprovalManager(auto_approve=False)
 
@@ -911,7 +911,7 @@ approvals.grant_pattern("navigate:https://example.com/*")   # pattern-based
 ### Structured Logging
 
 ```python
-from an_web.tracing.logs import get_logger
+from xgen_an_web.tracing.logs import get_logger
 
 logger = get_logger("my_agent", session_id=session.session_id)
 logger.info("Starting login flow")
@@ -929,7 +929,7 @@ all_logs = logger.get_all()
 Every tool call automatically records an artifact. You can also record custom ones:
 
 ```python
-from an_web.tracing.artifacts import ArtifactCollector
+from xgen_an_web.tracing.artifacts import ArtifactCollector
 
 collector = ArtifactCollector(session_id=session.session_id)
 collector.record_action_trace("navigate", status="ok", url="https://example.com")
@@ -949,7 +949,7 @@ Six artifact kinds: `action_trace`, `dom_snapshot`, `js_exception`, `network_req
 Record and replay action sequences for testing, debugging, and regression:
 
 ```python
-from an_web.tracing.replay import ReplayTrace, ReplayEngine
+from xgen_an_web.tracing.replay import ReplayTrace, ReplayEngine
 
 # Build a trace
 trace = ReplayTrace.new(session_id="test-1")
@@ -1058,7 +1058,7 @@ AN-Web can render modern Single Page Applications:
 ### Package Structure
 
 ```
-an_web/
+xgen_an_web/
 ├── core/         # ANWebEngine, Session, Scheduler, SnapshotManager, PageState
 ├── dom/          # Node/Element/Document, CSS Selectors, Mutation, Semantics
 ├── js/           # V8 bridge, JSRuntime, Host Web API (DOM ↔ V8 bridge)
@@ -1079,8 +1079,8 @@ an_web/
 ### Login Flow
 
 ```python
-from an_web import ANWebEngine
-from an_web.api import ANWebToolInterface
+from xgen_an_web import ANWebEngine
+from xgen_an_web.api import ANWebToolInterface
 
 async def login():
     async with ANWebEngine() as engine:
@@ -1106,7 +1106,7 @@ async def login():
 ### Web Scraping
 
 ```python
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def scrape_headlines():
     async with ANWebEngine() as engine:
@@ -1126,7 +1126,7 @@ async def scrape_headlines():
 
 ```python
 import asyncio
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def scrape_url(engine, url):
     session = await engine.create_session()
@@ -1150,7 +1150,7 @@ async def main():
 ### SPA Rendering (React / Webpack)
 
 ```python
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 async def render_spa():
     async with ANWebEngine() as engine:
@@ -1172,8 +1172,8 @@ async def render_spa():
 ### Sandboxed Session with Policy
 
 ```python
-from an_web import ANWebEngine
-from an_web.policy.rules import PolicyRules
+from xgen_an_web import ANWebEngine
+from xgen_an_web.policy.rules import PolicyRules
 
 async def safe_browse():
     policy = PolicyRules.sandboxed(allowed_domains=["example.com"])
@@ -1198,7 +1198,7 @@ async def safe_browse():
 pytest
 
 # With coverage
-pytest --cov=an_web --cov-report=term-missing
+pytest --cov=xgen_an_web --cov-report=term-missing
 
 # Specific module
 pytest tests/unit/dom/ -v
@@ -1227,7 +1227,7 @@ pytest tests/integration/ -v
 
 | Class | Import | Description |
 |---|---|---|
-| `ANWebEngine` | `from an_web import ANWebEngine` | Top-level factory. Async context manager. |
+| `ANWebEngine` | `from xgen_an_web import ANWebEngine` | Top-level factory. Async context manager. |
 | `Session` | via `engine.create_session()` | Browser tab. Owns cookies, storage, JS runtime. |
 
 ### Session Methods
@@ -1245,23 +1245,23 @@ pytest tests/integration/ -v
 
 | Symbol | Import | Description |
 |---|---|---|
-| `ANWebToolInterface` | `from an_web.api import ANWebToolInterface` | Typed tool helper methods |
-| `dispatch_tool()` | `from an_web.api import dispatch_tool` | Low-level tool dispatch |
-| `TOOLS_FOR_CLAUDE` | `from an_web.api import TOOLS_FOR_CLAUDE` | Anthropic tool schemas |
-| `TOOLS_FOR_OPENAI` | `from an_web.api import TOOLS_FOR_OPENAI` | OpenAI tool schemas |
-| `get_tool(name)` | `from an_web.api import get_tool` | Single tool schema lookup |
-| `get_tool_names()` | `from an_web.api import get_tool_names` | List all tool names |
+| `ANWebToolInterface` | `from xgen_an_web.api import ANWebToolInterface` | Typed tool helper methods |
+| `dispatch_tool()` | `from xgen_an_web.api import dispatch_tool` | Low-level tool dispatch |
+| `TOOLS_FOR_CLAUDE` | `from xgen_an_web.api import TOOLS_FOR_CLAUDE` | Anthropic tool schemas |
+| `TOOLS_FOR_OPENAI` | `from xgen_an_web.api import TOOLS_FOR_OPENAI` | OpenAI tool schemas |
+| `get_tool(name)` | `from xgen_an_web.api import get_tool` | Single tool schema lookup |
+| `get_tool_names()` | `from xgen_an_web.api import get_tool_names` | List all tool names |
 
 ### Policy
 
 | Class | Import | Description |
 |---|---|---|
-| `PolicyRules` | `from an_web.policy.rules import PolicyRules` | Domain/rate/scope rules |
+| `PolicyRules` | `from xgen_an_web.policy.rules import PolicyRules` | Domain/rate/scope rules |
 | `PolicyRules.default()` | | Permissive defaults (120 req/min) |
 | `PolicyRules.strict()` | | Conservative (30 req/min, approvals) |
 | `PolicyRules.sandboxed(domains)` | | Domain-locked |
-| `Sandbox` | `from an_web.policy.sandbox import Sandbox` | Resource limit enforcement |
-| `ApprovalManager` | `from an_web.policy.approvals import ApprovalManager` | Human-in-the-loop |
+| `Sandbox` | `from xgen_an_web.policy.sandbox import Sandbox` | Resource limit enforcement |
+| `ApprovalManager` | `from xgen_an_web.policy.approvals import ApprovalManager` | Human-in-the-loop |
 
 ### Data Models
 
@@ -1303,10 +1303,10 @@ Apache-2.0
 ## Contributing
 
 ```bash
-git clone https://github.com/CocoRoF/an-web
-cd an-web
+git clone https://github.com/PlateerLab/xgen-an-web
+cd xgen-an-web
 pip install -e ".[dev]"
 pytest                    # all 1565 tests should pass
-ruff check an_web/        # linting
-mypy an_web/              # type checking
+ruff check xgen_an_web/        # linting
+mypy xgen_an_web/              # type checking
 ```

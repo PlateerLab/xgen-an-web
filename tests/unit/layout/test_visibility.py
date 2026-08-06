@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.nodes import Element
-from an_web.layout.visibility import (
+from xgen_an_web.dom.nodes import Element
+from xgen_an_web.layout.visibility import (
     compute_visibility,
     compute_visibility_result,
     compute_visibility_cascaded,

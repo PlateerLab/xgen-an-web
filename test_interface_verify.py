@@ -7,7 +7,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 async def test_basic_navigate_and_snapshot():
     """Most basic usage: navigate + snapshot."""
-    from an_web import ANWebEngine
+    from xgen_an_web import ANWebEngine
 
     async with ANWebEngine() as engine:
         session = await engine.create_session()
@@ -23,7 +23,7 @@ async def test_basic_navigate_and_snapshot():
 
 async def test_act_dispatch():
     """act() dispatch — the unified AI tool interface."""
-    from an_web import ANWebEngine
+    from xgen_an_web import ANWebEngine
 
     async with ANWebEngine() as engine:
         session = await engine.create_session()
@@ -35,8 +35,8 @@ async def test_act_dispatch():
 
 async def test_tool_interface():
     """ANWebToolInterface — typed helper methods."""
-    from an_web import ANWebEngine
-    from an_web.api import ANWebToolInterface
+    from xgen_an_web import ANWebEngine
+    from xgen_an_web.api import ANWebToolInterface
 
     async with ANWebEngine() as engine:
         session = await engine.create_session()
@@ -53,7 +53,7 @@ async def test_tool_interface():
 
 async def test_tool_schemas():
     """Tool schemas for AI models."""
-    from an_web.api.tool_schema import TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI, get_tool_names
+    from xgen_an_web.api.tool_schema import TOOLS_FOR_CLAUDE, TOOLS_FOR_OPENAI, get_tool_names
 
     names = get_tool_names()
     assert "navigate" in names
@@ -66,7 +66,7 @@ async def test_tool_schemas():
 
 async def test_extract():
     """Extract action — CSS selector extraction."""
-    from an_web import ANWebEngine
+    from xgen_an_web import ANWebEngine
 
     async with ANWebEngine() as engine:
         session = await engine.create_session()
@@ -81,7 +81,7 @@ async def test_extract():
 
 async def test_eval_js():
     """eval_js — execute JavaScript."""
-    from an_web import ANWebEngine
+    from xgen_an_web import ANWebEngine
 
     async with ANWebEngine() as engine:
         session = await engine.create_session()
@@ -95,8 +95,8 @@ async def test_eval_js():
 
 async def test_policy():
     """Policy rules — domain restriction."""
-    from an_web import ANWebEngine
-    from an_web.policy.rules import PolicyRules
+    from xgen_an_web import ANWebEngine
+    from xgen_an_web.policy.rules import PolicyRules
 
     policy = PolicyRules.sandboxed(allowed_domains=["httpbin.org"])
 

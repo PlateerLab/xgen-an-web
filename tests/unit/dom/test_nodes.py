@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.nodes import Document, Element, Node, NodeType, TextNode
+from xgen_an_web.dom.nodes import Document, Element, Node, NodeType, TextNode
 
 
 class TestElement:

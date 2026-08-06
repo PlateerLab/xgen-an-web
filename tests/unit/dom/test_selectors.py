@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from an_web.browser.parser import parse_html
-from an_web.dom.selectors import SelectorEngine
+from xgen_an_web.browser.parser import parse_html
+from xgen_an_web.dom.selectors import SelectorEngine
 
 
 def qs(html: str, selector: str):

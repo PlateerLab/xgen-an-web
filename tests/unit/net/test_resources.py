@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.net.resources import LoadPolicy, ResourceType
+from xgen_an_web.net.resources import LoadPolicy, ResourceType
 
 
 class TestResourceType:

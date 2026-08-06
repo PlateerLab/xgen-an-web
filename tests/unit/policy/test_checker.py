@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 import pytest
-from an_web.policy.checker import PolicyChecker
-from an_web.policy.rules import PolicyRules, ViolationType, NavigationScope
-from an_web.policy.sandbox import Sandbox, SandboxLimits, Resource
-from an_web.policy.approvals import ApprovalManager
+from xgen_an_web.policy.checker import PolicyChecker
+from xgen_an_web.policy.rules import PolicyRules, ViolationType, NavigationScope
+from xgen_an_web.policy.sandbox import Sandbox, SandboxLimits, Resource
+from xgen_an_web.policy.approvals import ApprovalManager
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────

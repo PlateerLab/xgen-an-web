@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "an-web"
-version = "0.9.1"
+name = "xgen-an-web"
+version = "0.10.0"
 description = "AN-Web: AI-Native Web Browser Engine — executes the web as an actionable state machine for AI agents"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -45,12 +45,12 @@ mcp = [
 ]
 
 [project.scripts]
-an-web-mcp = "an_web.mcp_server:main"
+xgen-an-web-mcp = "xgen_an_web.mcp_server:main"
 
 [project.urls]
-Homepage = "https://github.com/CocoRoF/an-web"
-Repository = "https://github.com/CocoRoF/an-web"
-Issues = "https://github.com/CocoRoF/an-web/issues"
+Homepage = "https://github.com/PlateerLab/xgen-an-web"
+Repository = "https://github.com/PlateerLab/xgen-an-web"
+Issues = "https://github.com/PlateerLab/xgen-an-web/issues"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

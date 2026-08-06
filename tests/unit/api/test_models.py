@@ -5,7 +5,7 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from an_web.api.models import (
+from xgen_an_web.api.models import (
     SemanticTarget,
     NavigateRequest, ClickRequest, TypeRequest, ClearRequest,
     SelectRequest, SubmitRequest, ExtractRequest, SnapshotRequest,

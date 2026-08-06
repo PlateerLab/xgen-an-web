@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.semantic.affordances import (
+from xgen_an_web.semantic.affordances import (
     score_action_node,
     rank_primary_actions,
     _HIGH_VALUE_TEXTS,

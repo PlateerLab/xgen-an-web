@@ -78,7 +78,7 @@
 ### 2.2 패키지 구조
 
 ```
-an_web/
+xgen_an_web/
 ├── core/
 │   ├── engine.py          # 메인 엔진 진입점
 │   ├── session.py         # Session 생명주기 관리

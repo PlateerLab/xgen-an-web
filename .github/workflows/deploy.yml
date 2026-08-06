@@ -344,15 +344,15 @@ jobs:
           ### 설치
 
           \`\`\`bash
-          pip install an-web==${VERSION}
+          pip install xgen-an-web==${VERSION}
           \`\`\`
 
           ### 빌드 파일
 
           | 파일 | 설명 |
           |------|------|
-          | \`an_web-${VERSION}-py3-none-any.whl\` | Wheel 패키지 (권장) |
-          | \`an_web-${VERSION}.tar.gz\` | 소스 배포본 |
+          | \`xgen_an_web-${VERSION}-py3-none-any.whl\` | Wheel 패키지 (권장) |
+          | \`xgen_an_web-${VERSION}.tar.gz\` | 소스 배포본 |
           EOF
 
           echo "릴리스 노트 생성 완료"
@@ -422,7 +422,7 @@ jobs:
     # OIDC Trusted Publisher 환경: production=pypi, staging=testpypi
     environment:
       name: ${{ needs.check-version.outputs.environment == 'staging' && 'testpypi' || 'pypi' }}
-      url: ${{ needs.check-version.outputs.environment == 'staging' && format('https://test.pypi.org/project/an-web/{0}/', needs.check-version.outputs.version) || format('https://pypi.org/project/an-web/{0}/', needs.check-version.outputs.version) }}
+      url: ${{ needs.check-version.outputs.environment == 'staging' && format('https://test.pypi.org/project/xgen-an-web/{0}/', needs.check-version.outputs.version) || format('https://pypi.org/project/xgen-an-web/{0}/', needs.check-version.outputs.version) }}
 
     steps:
       - name: Download build artifacts
@@ -451,7 +451,7 @@ jobs:
         # staging: test.pypi.org — OIDC Trusted Publisher (environment: testpypi)
         # TestPyPI에서 별도 Trusted Publisher 등록 필요:
         #   https://test.pypi.org/manage/account/publishing/
-        #   owner=CocoRoF, repo=an-web, workflow=deploy.yml, env=testpypi
+        #   owner=CocoRoF, repo=xgen-an-web, workflow=deploy.yml, env=testpypi
         if: needs.check-version.outputs.environment == 'staging'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -463,10 +463,10 @@ jobs:
           ENV="${{ needs.check-version.outputs.environment }}"
           if [ "${ENV}" == "staging" ]; then
             PYPI_NAME="TestPyPI"
-            PYPI_URL="https://test.pypi.org/project/an-web/${VERSION}/"
+            PYPI_URL="https://test.pypi.org/project/xgen-an-web/${VERSION}/"
           else
             PYPI_NAME="PyPI"
-            PYPI_URL="https://pypi.org/project/an-web/${VERSION}/"
+            PYPI_URL="https://pypi.org/project/xgen-an-web/${VERSION}/"
           fi
           {
             echo "## 📦 ${PYPI_NAME} 배포 완료"

@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.nodes import Document
-from an_web.dom.semantics import SemanticNode
-from an_web.semantic.page_type import (
+from xgen_an_web.dom.nodes import Document
+from xgen_an_web.dom.semantics import SemanticNode
+from xgen_an_web.semantic.page_type import (
     PageTypeResult,
     classify_page_type,
     classify_page_type_full,

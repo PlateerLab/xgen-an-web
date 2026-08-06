@@ -1,10 +1,10 @@
-"""Unit tests for an_web/core/scheduler.py -- EventLoopScheduler."""
+"""Unit tests for xgen_an_web/core/scheduler.py -- EventLoopScheduler."""
 from __future__ import annotations
 
 import asyncio
 import time
 import pytest
-from an_web.core.scheduler import EventLoopScheduler, _TimerEntry
+from xgen_an_web.core.scheduler import EventLoopScheduler, _TimerEntry
 
 
 # ---------------------------------------------------------------------------

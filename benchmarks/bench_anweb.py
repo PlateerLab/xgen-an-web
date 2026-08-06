@@ -1,17 +1,17 @@
-"""an-web side of the comparison bench. Mirrors bench_pw.py scenario-for-scenario."""
+"""xgen-an-web side of the comparison bench. Mirrors bench_pw.py scenario-for-scenario."""
 import asyncio
 import time
 import traceback
 
 from bench_common import MICRO_ROUNDS, SITES, Recorder, Timer
 
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 NAV_TIMEOUT = 90
 
 
 def render_tree(node, budget=400) -> str:
-    """Replica of an-web-mcp's _render_node: the engine's real AI surface."""
+    """Replica of xgen-an-web-mcp's _render_node: the engine's real AI surface."""
     lines: list[str] = []
     b = [budget]
 
@@ -48,7 +48,7 @@ async def texts(session, sel, limit=40):
 
 
 async def main():
-    rec = Recorder("an-web")
+    rec = Recorder("xgen-an-web")
     snapshots = {}
 
     with Timer() as t_cold:

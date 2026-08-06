@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from an_web.policy.sandbox import Sandbox, SandboxLimits, Resource
-from an_web.policy.rules import ViolationType
+from xgen_an_web.policy.sandbox import Sandbox, SandboxLimits, Resource
+from xgen_an_web.policy.rules import ViolationType
 
 
 # ── SandboxLimits ─────────────────────────────────────────────────────────────

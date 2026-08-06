@@ -32,11 +32,11 @@ import pytest
 import respx
 import httpx
 
-from an_web.core.engine import ANWebEngine
-from an_web.api.rpc import ANWebToolInterface
-from an_web.api.models import ActionResponse
-from an_web.tracing.artifacts import ArtifactCollector, ArtifactKind
-from an_web.tracing.replay import ReplayTrace, ReplayEngine
+from xgen_an_web.core.engine import ANWebEngine
+from xgen_an_web.api.rpc import ANWebToolInterface
+from xgen_an_web.api.models import ActionResponse
+from xgen_an_web.tracing.artifacts import ArtifactCollector, ArtifactKind
+from xgen_an_web.tracing.replay import ReplayTrace, ReplayEngine
 
 
 # ── HTML fixtures ──────────────────────────────────────────────────────────────
@@ -447,7 +447,7 @@ async def test_policy_blocks_forbidden_domain():
     """
     PolicyRules(denied_domains=["evil.com"]) must block navigation to that domain.
     """
-    from an_web.policy.rules import PolicyRules
+    from xgen_an_web.policy.rules import PolicyRules
 
     policy = PolicyRules(denied_domains=["evil.com"])
 
@@ -467,7 +467,7 @@ async def test_policy_blocks_forbidden_domain():
 @respx.mock
 async def test_policy_allows_non_blocked_domain():
     """Navigation to an allowed domain must proceed normally."""
-    from an_web.policy.rules import PolicyRules
+    from xgen_an_web.policy.rules import PolicyRules
 
     respx.get(f"{BASE}/login").mock(
         return_value=httpx.Response(

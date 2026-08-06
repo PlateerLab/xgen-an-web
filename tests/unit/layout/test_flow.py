@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.nodes import Element, Document
-from an_web.layout.flow import (
+from xgen_an_web.dom.nodes import Element, Document
+from xgen_an_web.layout.flow import (
     get_display_type,
     compute_z_order,
     creates_stacking_context,

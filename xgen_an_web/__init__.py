@@ -1,0 +1,25 @@
+"""
+AN-Web: AI-Native Web Browser Engine
+
+A Python-native lightweight browser engine designed for AI agents.
+Instead of rendering pixels for humans, AN-Web executes the web
+as an actionable state machine for AI.
+
+Architecture:
+    Control Plane  → SessionManager, PolicyEngine, Scheduler
+    Execution Plane → NetworkLoader, HTMLParser, DOMCore, JSBridge, EventLoop
+    Semantic Layer  → SemanticExtractor, ActionRuntime, ArtifactCollector
+"""
+
+from importlib.metadata import PackageNotFoundError, version
+
+from xgen_an_web.core.engine import ANWebEngine
+
+try:
+    __version__ = version("xgen-an-web")
+except PackageNotFoundError:
+    __version__ = "0.0.0"
+
+__author__ = "CocoRoF"
+
+__all__ = ["ANWebEngine", "__version__"]

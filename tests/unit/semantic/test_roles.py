@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.nodes import Element
-from an_web.semantic.roles import (
+from xgen_an_web.dom.nodes import Element
+from xgen_an_web.semantic.roles import (
     get_affordances, infer_role, is_interactive_role, is_structural_role,
     is_content_role, is_landmark_role, get_heading_level,
     WIDGET_ROLES, LANDMARK_ROLES, CONTENT_ROLES,

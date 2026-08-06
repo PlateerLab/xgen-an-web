@@ -21,9 +21,9 @@ import httpx
 import pytest
 import respx
 
-from an_web import ANWebEngine
-from an_web.browser.parser import parse_html
-from an_web.js.runtime import JSRuntime
+from xgen_an_web import ANWebEngine
+from xgen_an_web.browser.parser import parse_html
+from xgen_an_web.js.runtime import JSRuntime
 
 pytestmark = pytest.mark.asyncio
 

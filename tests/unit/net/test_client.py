@@ -6,7 +6,7 @@ import pytest
 import respx
 import httpx
 
-from an_web.net.client import (
+from xgen_an_web.net.client import (
     NetworkClient,
     NetworkError,
     NetworkTrace,
@@ -15,7 +15,7 @@ from an_web.net.client import (
     _classify_resource_type,
     _status_text,
 )
-from an_web.net.cookies import Cookie, CookieJar
+from xgen_an_web.net.cookies import Cookie, CookieJar
 
 
 # ─── Response ─────────────────────────────────────────────────────────────────

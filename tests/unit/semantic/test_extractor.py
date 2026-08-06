@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 import pytest
-from an_web.browser.parser import parse_html
-from an_web.semantic.extractor import SemanticExtractor
-from an_web.dom.semantics import SemanticNode, PageSemantics
+from xgen_an_web.browser.parser import parse_html
+from xgen_an_web.semantic.extractor import SemanticExtractor
+from xgen_an_web.dom.semantics import SemanticNode, PageSemantics
 
 
 # ─── Fixtures ─────────────────────────────────────────────────────────────────
@@ -120,7 +120,7 @@ class TestPageTypeClassification:
         assert ps.page_type in ("search", "search_results", "generic")
 
     def test_empty_document(self):
-        from an_web.dom.nodes import Document
+        from xgen_an_web.dom.nodes import Document
         doc = Document(url="about:blank")
         ps = make_extractor().extract_from_document(doc, url="about:blank")
         assert isinstance(ps, PageSemantics)
@@ -443,7 +443,7 @@ class TestSemanticNodeNewFields:
             assert hasattr(node, "form_scope_id")
 
     def test_interaction_rank_in_to_dict_when_nonzero(self):
-        from an_web.dom.semantics import SemanticNode
+        from xgen_an_web.dom.semantics import SemanticNode
         node = SemanticNode(
             node_id="n1", tag="button", role="button",
             name="Submit", value=None, xpath="/button[1]",
@@ -455,7 +455,7 @@ class TestSemanticNodeNewFields:
         assert d["interactionRank"] == 0.75
 
     def test_interaction_rank_not_in_to_dict_when_zero(self):
-        from an_web.dom.semantics import SemanticNode
+        from xgen_an_web.dom.semantics import SemanticNode
         node = SemanticNode(
             node_id="n1", tag="button", role="button",
             name="Submit", value=None, xpath="/button[1]",

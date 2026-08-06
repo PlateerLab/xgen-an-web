@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.mutation import MutationObserver, MutationRecord, MutationType
+from xgen_an_web.dom.mutation import MutationObserver, MutationRecord, MutationType
 
 
 class TestMutationType:

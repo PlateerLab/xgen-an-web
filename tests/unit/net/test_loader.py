@@ -5,9 +5,9 @@ import pytest
 import httpx
 import respx
 
-from an_web.net.client import NetworkClient
-from an_web.net.loader import ResourceLoader
-from an_web.net.resources import LoadPolicy, ResourceType
+from xgen_an_web.net.client import NetworkClient
+from xgen_an_web.net.loader import ResourceLoader
+from xgen_an_web.net.resources import LoadPolicy, ResourceType
 
 
 BASE = "http://loader.test"

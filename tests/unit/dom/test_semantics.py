@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.dom.semantics import ActionResult, PageSemantics, SemanticNode
+from xgen_an_web.dom.semantics import ActionResult, PageSemantics, SemanticNode
 
 
 # ─── SemanticNode ─────────────────────────────────────────────────────────────

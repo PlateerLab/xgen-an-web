@@ -42,7 +42,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          python -m pytest tests/ --cov=an_web --cov-report=term-missing --cov-report=xml -q
+          python -m pytest tests/ --cov=xgen_an_web --cov-report=term-missing --cov-report=xml -q
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -72,4 +72,4 @@ jobs:
 
       - name: Run ruff
         run: |
-          ruff check an_web/
+          ruff check xgen_an_web/

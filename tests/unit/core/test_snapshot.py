@@ -1,5 +1,5 @@
 """
-Unit tests for an_web/core/snapshot.py — Snapshot + SnapshotManager.
+Unit tests for xgen_an_web/core/snapshot.py — Snapshot + SnapshotManager.
 
 Coverage:
 - Snapshot: creation, to_dict, to_json, action_count, has_semantic, repr
@@ -16,7 +16,7 @@ import time
 
 import pytest
 
-from an_web.core.snapshot import Snapshot, SnapshotManager
+from xgen_an_web.core.snapshot import Snapshot, SnapshotManager
 
 
 # ============================================================================

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import pytest
-from an_web.tracing.replay import (
+from xgen_an_web.tracing.replay import (
     ReplayStep, ReplayTrace, ReplayResult, StepResult, ReplayEngine,
 )
 

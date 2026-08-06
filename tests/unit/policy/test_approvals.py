@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.policy.approvals import ApprovalManager, PendingApproval
+from xgen_an_web.policy.approvals import ApprovalManager, PendingApproval
 
 
 # ── PendingApproval ───────────────────────────────────────────────────────────

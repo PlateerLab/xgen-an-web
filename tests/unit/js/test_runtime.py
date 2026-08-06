@@ -1,10 +1,10 @@
-"""Tests for an_web/js/runtime.py — JSRuntime."""
+"""Tests for xgen_an_web/js/runtime.py — JSRuntime."""
 from __future__ import annotations
 
 import asyncio
 import pytest
-from an_web.js.runtime import JSRuntime
-from an_web.js.bridge import JSError, EvalResult
+from xgen_an_web.js.runtime import JSRuntime
+from xgen_an_web.js.bridge import JSError, EvalResult
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -22,7 +22,7 @@ def _make_session(url="https://example.com/", doc=None):
 
 def _make_session_with_doc(html="<html><head><title>T</title></head><body></body></html>",
                             url="https://example.com/"):
-    from an_web.browser.parser import parse_html
+    from xgen_an_web.browser.parser import parse_html
     doc = parse_html(html, url)
     return _make_session(url, doc)
 
@@ -98,7 +98,7 @@ class TestEval:
         assert rt.eval("undefined") is None
 
     def test_object_result(self, rt):
-        from an_web.js.bridge import js_to_py
+        from xgen_an_web.js.bridge import js_to_py
         raw = rt.eval("({x: 1, y: [2, 3]})")
         result = js_to_py(raw)
         assert result == {"x": 1, "y": [2, 3]}
@@ -443,7 +443,7 @@ LOGIN_HTML = b"""<!DOCTYPE html>
 
 @pytest.fixture
 def rt_login():
-    from an_web.browser.parser import parse_html
+    from xgen_an_web.browser.parser import parse_html
     doc = parse_html(LOGIN_HTML.decode(), "https://app.example.com/login")
 
     class Sess:
@@ -498,7 +498,7 @@ class TestDocumentProxy:
         assert r.value == 1
 
     def test_document_title_setter(self, rt_login):
-        from an_web.browser.parser import parse_html
+        from xgen_an_web.browser.parser import parse_html
         doc = parse_html(LOGIN_HTML.decode(), "https://app.example.com/login")
 
         class Sess:
@@ -512,7 +512,7 @@ class TestDocumentProxy:
 
     def test_set_attribute_propagates_to_dom(self, rt_login):
         """JS setAttribute should update the Python DOM node."""
-        from an_web.browser.parser import parse_html
+        from xgen_an_web.browser.parser import parse_html
         doc = parse_html(LOGIN_HTML.decode(), "https://app.example.com/login")
 
         class Sess:

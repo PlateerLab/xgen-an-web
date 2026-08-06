@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import time
 import pytest
-from an_web.net.cookies import Cookie, CookieJar
+from xgen_an_web.net.cookies import Cookie, CookieJar
 
 
 class TestCookieJar:

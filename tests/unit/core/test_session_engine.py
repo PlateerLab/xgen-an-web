@@ -23,10 +23,10 @@ import pytest
 import respx
 import httpx
 
-from an_web.core.engine import ANWebEngine
-from an_web.core.session import Session
-from an_web.core.state import EngineStatus
-from an_web.policy.rules import PolicyRules
+from xgen_an_web.core.engine import ANWebEngine
+from xgen_an_web.core.session import Session
+from xgen_an_web.core.state import EngineStatus
+from xgen_an_web.policy.rules import PolicyRules
 
 
 # ============================================================================

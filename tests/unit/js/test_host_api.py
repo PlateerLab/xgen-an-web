@@ -1,5 +1,5 @@
 """
-Dedicated unit tests for an_web/js/host_api.py — Host Web API layer.
+Dedicated unit tests for xgen_an_web/js/host_api.py — Host Web API layer.
 
 Covers every major surface:
 - document (query, getElementById, forms/links/images, title, URL)
@@ -17,8 +17,8 @@ Covers every major surface:
 from __future__ import annotations
 
 import pytest
-from an_web.js.runtime import JSRuntime
-from an_web.browser.parser import parse_html
+from xgen_an_web.js.runtime import JSRuntime
+from xgen_an_web.browser.parser import parse_html
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Fixtures / helpers

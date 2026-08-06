@@ -6,7 +6,7 @@ import httpx
 import pytest
 import respx
 
-from an_web import ANWebEngine
+from xgen_an_web import ANWebEngine
 
 pytestmark = pytest.mark.asyncio
 
@@ -54,7 +54,7 @@ class TestFetchTool:
 
     @respx.mock
     async def test_fetch_respects_policy(self):
-        from an_web.policy.rules import PolicyRules
+        from xgen_an_web.policy.rules import PolicyRules
         _mock_page("https://example.com/", _PAGE)
         async with ANWebEngine() as engine:
             session = await engine.create_session(

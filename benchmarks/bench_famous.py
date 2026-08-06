@@ -1,4 +1,4 @@
-"""Famous-sites bench: an-web vs Playwright on the same 10 real-world sites.
+"""Famous-sites bench: xgen-an-web vs Playwright on the same 10 real-world sites.
 
 Usage: python bench_famous.py anweb|pw
 Writes famous_<engine>.json. Success criteria per site (identical for both
@@ -33,7 +33,7 @@ NAV_TIMEOUT_S = 60
 
 
 async def run_anweb(rec):
-    from an_web import ANWebEngine
+    from xgen_an_web import ANWebEngine
 
     with Timer() as t_cold:
         engine = ANWebEngine()
@@ -122,7 +122,7 @@ async def run_pw(rec):
 
 async def main():
     which = sys.argv[1] if len(sys.argv) > 1 else "anweb"
-    rec = Recorder("an-web" if which == "anweb" else "playwright")
+    rec = Recorder("xgen-an-web" if which == "anweb" else "playwright")
     baseline = tree_rss_mb()
     cold = await (run_anweb(rec) if which == "anweb" else run_pw(rec))
     rec.finish(f"famous_{which}.json", cold_start_ms=round(cold, 1),

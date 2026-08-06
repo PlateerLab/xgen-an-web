@@ -6,11 +6,11 @@ import pytest
 import respx
 import httpx
 
-from an_web.browser.parser import parse_html
-from an_web.core.snapshot import SnapshotManager
-from an_web.dom.semantics import ActionResult
-from an_web.net.client import NetworkClient
-from an_web.net.cookies import CookieJar
+from xgen_an_web.browser.parser import parse_html
+from xgen_an_web.core.snapshot import SnapshotManager
+from xgen_an_web.dom.semantics import ActionResult
+from xgen_an_web.net.client import NetworkClient
+from xgen_an_web.net.cookies import CookieJar
 
 
 # ─── Minimal mock session ─────────────────────────────────────────────────────
@@ -115,7 +115,7 @@ class TestNavigateAction:
         network = NetworkClient(cookie_jar=CookieJar())
         session = MockSession(network=network)
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://example.com/")
 
         assert result.is_ok()
@@ -134,7 +134,7 @@ class TestNavigateAction:
         network = NetworkClient(cookie_jar=CookieJar())
         session = MockSession(network=network)
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://example.com/missing")
 
         assert result.status == "failed"
@@ -143,11 +143,11 @@ class TestNavigateAction:
 
     @pytest.mark.asyncio
     async def test_navigate_blocked_by_policy(self):
-        from an_web.policy.rules import PolicyRules
+        from xgen_an_web.policy.rules import PolicyRules
         deny_all = PolicyRules(denied_domains=["blocked.com"])
         session = MockSession(policy=deny_all)
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://blocked.com")
 
         assert result.status == "failed"
@@ -158,7 +158,7 @@ class TestNavigateAction:
         session = MockSession(network=None)
         session.network = None
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://example.com")
         assert result.status == "failed"
 
@@ -174,7 +174,7 @@ class TestNavigateAction:
         network = NetworkClient()
         session = MockSession(network=network)
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://example.com/page")
 
         assert result.state_delta_id is not None
@@ -191,7 +191,7 @@ class TestNavigateAction:
         network = NetworkClient()
         session = MockSession(network=network)
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://example.com/ok")
 
         assert result.effects["status_code"] == 200
@@ -209,7 +209,7 @@ class TestNavigateAction:
         network = NetworkClient()
         session = MockSession(network=network)
 
-        from an_web.actions.navigate import NavigateAction
+        from xgen_an_web.actions.navigate import NavigateAction
         result = await NavigateAction().execute(session, url="https://example.com/")
 
         assert any(r.get("tool") == "snapshot" for r in result.recommended_next_actions)
@@ -223,7 +223,7 @@ class TestClickAction:
     async def test_click_button(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#submit-btn")
 
         # Should attempt form submit, which fails gracefully without network
@@ -233,7 +233,7 @@ class TestClickAction:
     async def test_click_target_not_found(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#nonexistent")
 
         assert result.status == "failed"
@@ -243,7 +243,7 @@ class TestClickAction:
     async def test_click_hidden_element_fails(self):
         session = MockSession(html=SEARCH_HTML, url="https://example.com")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#hidden-btn")
 
         assert result.status == "failed"
@@ -253,7 +253,7 @@ class TestClickAction:
     async def test_click_disabled_button_fails(self):
         session = MockSession(html=SEARCH_HTML, url="https://example.com")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#disabled-btn")
 
         assert result.status == "failed"
@@ -271,7 +271,7 @@ class TestClickAction:
         network = NetworkClient()
         session = MockSession(html=LOGIN_HTML, url="https://example.com", network=network)
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#forgot")
 
         assert result.is_ok()
@@ -303,7 +303,7 @@ class TestClickAction:
         email_el.set_attribute("value", "test@test.com")
         pw_el.set_attribute("value", "secret")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#submit-btn")
 
         assert result.is_ok()
@@ -316,7 +316,7 @@ class TestClickAction:
         btn = session._current_document.get_element_by_id("b1")
         assert btn is not None
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(
             session, target={"by": "node_id", "node_id": btn.node_id}
         )
@@ -327,7 +327,7 @@ class TestClickAction:
         html = "<button id='btn'>Click me</button>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#btn")
 
         assert result.is_ok()
@@ -339,7 +339,7 @@ class TestClickAction:
         html = '<a id="anchor" href="#section">Jump</a>'
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.click import ClickAction
+        from xgen_an_web.actions.click import ClickAction
         result = await ClickAction().execute(session, target="#anchor")
 
         # Should not fail — anchor-only href is handled as generic click
@@ -353,7 +353,7 @@ class TestTypeAction:
     async def test_type_into_input(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(
             session, target="#email", text="test@test.com"
         )
@@ -367,7 +367,7 @@ class TestTypeAction:
     async def test_type_events_dispatched(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#pw", text="password123")
 
         assert "input" in result.effects["events_dispatched"]
@@ -377,7 +377,7 @@ class TestTypeAction:
     async def test_type_target_not_found(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#nonexistent", text="hello")
         assert result.status == "failed"
         assert "not_found" in result.error
@@ -387,7 +387,7 @@ class TestTypeAction:
         html = "<button id='btn'>Click</button>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#btn", text="hello")
         assert result.status == "failed"
         assert "not_an_input" in result.error
@@ -397,7 +397,7 @@ class TestTypeAction:
         html = "<textarea id='ta' name='message'></textarea>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#ta", text="Hello world")
         assert result.is_ok()
         assert result.effects["value_set"] == "Hello world"
@@ -409,7 +409,7 @@ class TestTypeAction:
         el = session._current_document.get_element_by_id("inp")
         el.set_attribute("value", "Hello ")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#inp", text="World", append=True)
 
         assert result.is_ok()
@@ -423,7 +423,7 @@ class TestTypeAction:
         el = session._current_document.get_element_by_id("inp")
         el.set_attribute("value", "old value")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#inp", text="new value")
 
         assert result.effects["value_set"] == "new value"
@@ -434,7 +434,7 @@ class TestTypeAction:
         html = "<input id='inp' type='text' disabled>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#inp", text="hello")
 
         assert result.status == "failed"
@@ -445,7 +445,7 @@ class TestTypeAction:
         html = "<input id='sub' type='submit' value='Go'>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import TypeAction
+        from xgen_an_web.actions.input import TypeAction
         result = await TypeAction().execute(session, target="#sub", text="hello")
 
         assert result.status == "failed"
@@ -461,7 +461,7 @@ class TestClearAction:
         el = session._current_document.get_element_by_id("email")
         el.set_attribute("value", "pre-filled@test.com")
 
-        from an_web.actions.input import ClearAction
+        from xgen_an_web.actions.input import ClearAction
         result = await ClearAction().execute(session, target="#email")
         assert result.is_ok()
         assert el.get_attribute("value") == ""
@@ -474,7 +474,7 @@ class TestClearAction:
         el = session._current_document.get_element_by_id("inp")
         el.set_attribute("value", "something")
 
-        from an_web.actions.input import ClearAction
+        from xgen_an_web.actions.input import ClearAction
         result = await ClearAction().execute(session, target="#inp")
 
         assert result.effects["previous_value"] == "something"
@@ -483,7 +483,7 @@ class TestClearAction:
     async def test_clear_target_not_found(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.input import ClearAction
+        from xgen_an_web.actions.input import ClearAction
         result = await ClearAction().execute(session, target="#nonexistent")
         assert result.status == "failed"
 
@@ -492,7 +492,7 @@ class TestClearAction:
         html = "<div id='d1'>text</div>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import ClearAction
+        from xgen_an_web.actions.input import ClearAction
         result = await ClearAction().execute(session, target="#d1")
         assert result.status == "failed"
 
@@ -501,7 +501,7 @@ class TestClearAction:
         html = "<input id='inp' type='text' disabled value='x'>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import ClearAction
+        from xgen_an_web.actions.input import ClearAction
         result = await ClearAction().execute(session, target="#inp")
         assert result.status == "failed"
 
@@ -513,7 +513,7 @@ class TestSelectAction:
     async def test_select_value(self):
         session = MockSession(html=SELECT_HTML, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#country", value="uk")
         assert result.is_ok()
         assert result.effects["selected_value"] == "uk"
@@ -523,7 +523,7 @@ class TestSelectAction:
         html = "<input id='inp' type='text'>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#inp", value="x")
         assert result.status == "failed"
         assert "not_a_select_element" in result.error
@@ -532,7 +532,7 @@ class TestSelectAction:
     async def test_select_target_not_found(self):
         session = MockSession(html=SELECT_HTML, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#nonexistent", value="us")
         assert result.status == "failed"
 
@@ -540,7 +540,7 @@ class TestSelectAction:
     async def test_select_option_found_flag(self):
         session = MockSession(html=SELECT_HTML, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#country", value="de")
         assert result.is_ok()
         assert result.effects["option_found"] is True
@@ -550,7 +550,7 @@ class TestSelectAction:
         """Selecting an unknown value should still set it (graceful)."""
         session = MockSession(html=SELECT_HTML, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#country", value="zz")
         assert result.is_ok()
         assert result.effects["selected_value"] == "zz"
@@ -560,7 +560,7 @@ class TestSelectAction:
     async def test_select_dispatches_change_event(self):
         session = MockSession(html=SELECT_HTML, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#country", value="us")
         assert "change" in result.effects["events_dispatched"]
 
@@ -568,7 +568,7 @@ class TestSelectAction:
     async def test_select_disabled_fails(self):
         session = MockSession(html=SELECT_HTML, url="https://example.com")
 
-        from an_web.actions.input import SelectAction
+        from xgen_an_web.actions.input import SelectAction
         result = await SelectAction().execute(session, target="#disabled-select", value="s")
         assert result.status == "failed"
         assert "disabled" in result.error
@@ -584,7 +584,7 @@ class TestSubmitAction:
         form = session._current_document.get_element_by_id("login")
         assert form is not None
 
-        from an_web.actions.submit import SubmitAction
+        from xgen_an_web.actions.submit import SubmitAction
         result = await SubmitAction().execute(
             session, target={"by": "node_id", "node_id": form.node_id}
         )
@@ -595,7 +595,7 @@ class TestSubmitAction:
     async def test_submit_target_not_found(self):
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.submit import SubmitAction
+        from xgen_an_web.actions.submit import SubmitAction
         result = await SubmitAction().execute(session, target="#nonexistent")
         assert result.status == "failed"
         assert "not_found" in result.error
@@ -605,7 +605,7 @@ class TestSubmitAction:
         """Targeting an input inside a form should find the form automatically."""
         session = MockSession(html=LOGIN_HTML, url="https://example.com")
 
-        from an_web.actions.submit import SubmitAction
+        from xgen_an_web.actions.submit import SubmitAction
         result = await SubmitAction().execute(session, target="#email")
         # Should find enclosing form and attempt submission
         assert result.is_ok()
@@ -625,7 +625,7 @@ class TestSubmitAction:
         el = session._current_document.get_element_by_id("email")
         el.set_attribute("value", "user@example.com")
 
-        from an_web.actions.submit import SubmitAction
+        from xgen_an_web.actions.submit import SubmitAction
         result = await SubmitAction().execute(session, target="#login")
 
         assert result.is_ok()
@@ -638,7 +638,7 @@ class TestSubmitAction:
         html = "<div id='orphan'>No form here</div>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.submit import SubmitAction
+        from xgen_an_web.actions.submit import SubmitAction
         result = await SubmitAction().execute(session, target="#orphan")
         assert result.status == "failed"
         assert "no_form_found" in result.error
@@ -658,7 +658,7 @@ class TestExtractAction:
         """
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(session, query=".item")
         assert result.is_ok()
         assert result.effects["count"] == 3
@@ -668,7 +668,7 @@ class TestExtractAction:
         session = MockSession()
         session._current_document = None
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(session, query="p")
         assert result.status == "failed"
 
@@ -677,7 +677,7 @@ class TestExtractAction:
         html = "<p id='p1'>Hello</p><p id='p2'>World</p>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(session, query="p")
         results = result.effects["results"]
         texts = [r["text"] for r in results]
@@ -688,7 +688,7 @@ class TestExtractAction:
     async def test_extract_css_mode(self):
         session = MockSession(html=PRODUCT_HTML, url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(session, query=".product")
         assert result.is_ok()
         assert result.effects["count"] == 2
@@ -698,7 +698,7 @@ class TestExtractAction:
     async def test_extract_structured_mode(self):
         session = MockSession(html=PRODUCT_HTML, url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(
             session,
             query={
@@ -729,7 +729,7 @@ class TestExtractAction:
         session = MockSession(html=html, url="https://example.com")
 
         # Extract the elements first, then parse data-json attributes manually
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(
             session,
             query={"selector": "[data-json]", "fields": {"id_attr": {"sel": "", "attr": "id"}}}
@@ -743,7 +743,7 @@ class TestExtractAction:
         html = "<div id='main'><p>Content</p></div>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(
             session,
             query={"mode": "html", "selector": "#main"}
@@ -756,7 +756,7 @@ class TestExtractAction:
     async def test_extract_structured_attribute_field(self):
         session = MockSession(html=PRODUCT_HTML, url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(
             session,
             query={
@@ -775,7 +775,7 @@ class TestExtractAction:
     async def test_extract_unknown_mode_fails(self):
         session = MockSession(html="<p>hi</p>", url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(session, query={"mode": "foobar"})
         assert result.status == "failed"
 
@@ -783,7 +783,7 @@ class TestExtractAction:
     async def test_extract_no_results_is_ok(self):
         session = MockSession(html="<p>no divs here</p>", url="https://example.com")
 
-        from an_web.actions.extract import ExtractAction
+        from xgen_an_web.actions.extract import ExtractAction
         result = await ExtractAction().execute(session, query="div.nonexistent")
         assert result.is_ok()
         assert result.effects["count"] == 0
@@ -797,7 +797,7 @@ class TestScrollAction:
     async def test_scroll_default_delta(self):
         session = MockSession()
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session)
 
         assert result.is_ok()
@@ -808,7 +808,7 @@ class TestScrollAction:
     async def test_scroll_custom_delta(self):
         session = MockSession()
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session, delta_y=500, delta_x=100)
 
         assert result.effects["scroll_y"] == 500
@@ -820,7 +820,7 @@ class TestScrollAction:
         session._scroll_y = 1000
         session._scroll_x = 50
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session, to_top=True)
 
         assert result.effects["scroll_y"] == 0
@@ -830,7 +830,7 @@ class TestScrollAction:
     async def test_scroll_absolute_mode(self):
         session = MockSession()
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session, delta_x=100, delta_y=200, absolute=True)
 
         assert result.effects["scroll_x"] == 100
@@ -841,7 +841,7 @@ class TestScrollAction:
         session = MockSession()
         session._scroll_y = 300
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session, delta_y=200)
 
         assert result.effects["scroll_y"] == 500
@@ -850,7 +850,7 @@ class TestScrollAction:
     async def test_scroll_negative_clamped_to_zero(self):
         session = MockSession()
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session, delta_y=-500)
 
         assert result.effects["scroll_y"] == 0  # clamped
@@ -859,7 +859,7 @@ class TestScrollAction:
     async def test_scroll_returns_target_element_none_for_window(self):
         session = MockSession()
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session)
 
         assert result.effects["target_element"] is None
@@ -869,7 +869,7 @@ class TestScrollAction:
         html = "<div id='box' style='overflow:auto'>content</div>"
         session = MockSession(html=html, url="https://example.com")
 
-        from an_web.actions.scroll import ScrollAction
+        from xgen_an_web.actions.scroll import ScrollAction
         result = await ScrollAction().execute(session, target="#box", delta_y=100)
 
         assert result.is_ok()
@@ -882,7 +882,7 @@ class TestWaitForAction:
     async def test_wait_for_network_idle_ok(self):
         session = MockSession()
 
-        from an_web.actions.wait_for import WaitForAction
+        from xgen_an_web.actions.wait_for import WaitForAction
         result = await WaitForAction().execute(session, condition="network_idle", timeout_ms=1000)
 
         assert result.is_ok()
@@ -892,7 +892,7 @@ class TestWaitForAction:
     async def test_wait_for_unknown_condition_resolves(self):
         session = MockSession()
 
-        from an_web.actions.wait_for import WaitForAction
+        from xgen_an_web.actions.wait_for import WaitForAction
         # Unknown condition — wait completes immediately (no wait logic)
         result = await WaitForAction().execute(
             session, condition="unknown_condition", timeout_ms=500
@@ -905,7 +905,7 @@ class TestWaitForAction:
         """Waiting for a nonexistent element should time out."""
         session = MockSession(html="<p>no button here</p>", url="https://example.com")
 
-        from an_web.actions.wait_for import WaitForAction
+        from xgen_an_web.actions.wait_for import WaitForAction
         result = await WaitForAction().execute(
             session,
             condition="element_visible",
@@ -919,7 +919,7 @@ class TestWaitForAction:
     async def test_wait_for_timeout_has_recommended_action(self):
         session = MockSession(html="<p>empty</p>", url="https://example.com")
 
-        from an_web.actions.wait_for import WaitForAction
+        from xgen_an_web.actions.wait_for import WaitForAction
         result = await WaitForAction().execute(
             session, condition="element_visible", selector="#ghost", timeout_ms=100
         )
@@ -968,7 +968,7 @@ class TestActionResult:
 
 class TestClickHelpers:
     def test_is_submit_button_button_tag(self):
-        from an_web.actions.click import _is_submit_button
+        from xgen_an_web.actions.click import _is_submit_button
 
         class MockEl:
             tag = "button"
@@ -978,7 +978,7 @@ class TestClickHelpers:
         assert _is_submit_button(MockEl()) is True
 
     def test_is_submit_button_button_reset(self):
-        from an_web.actions.click import _is_submit_button
+        from xgen_an_web.actions.click import _is_submit_button
 
         class MockEl:
             tag = "button"
@@ -988,7 +988,7 @@ class TestClickHelpers:
         assert _is_submit_button(MockEl()) is False
 
     def test_is_submit_button_input_submit(self):
-        from an_web.actions.click import _is_submit_button
+        from xgen_an_web.actions.click import _is_submit_button
 
         class MockEl:
             tag = "input"
@@ -998,7 +998,7 @@ class TestClickHelpers:
         assert _is_submit_button(MockEl()) is True
 
     def test_is_submit_button_div(self):
-        from an_web.actions.click import _is_submit_button
+        from xgen_an_web.actions.click import _is_submit_button
 
         class MockEl:
             tag = "div"
@@ -1007,7 +1007,7 @@ class TestClickHelpers:
         assert _is_submit_button(MockEl()) is False
 
     def test_make_js_selector_with_id(self):
-        from an_web.actions.click import _make_js_selector
+        from xgen_an_web.actions.click import _make_js_selector
 
         class MockEl:
             stable_selector = None
@@ -1021,7 +1021,7 @@ class TestClickHelpers:
         assert "my-btn" in sel
 
     def test_make_js_selector_no_id_uses_stable(self):
-        from an_web.actions.click import _make_js_selector
+        from xgen_an_web.actions.click import _make_js_selector
 
         class MockEl:
             stable_selector = "div.foo > button"
@@ -1032,7 +1032,7 @@ class TestClickHelpers:
         assert "querySelector" in sel
 
     def test_make_js_selector_none_when_no_info(self):
-        from an_web.actions.click import _make_js_selector
+        from xgen_an_web.actions.click import _make_js_selector
 
         class MockEl:
             stable_selector = None
@@ -1043,7 +1043,7 @@ class TestClickHelpers:
 
 class TestExtractHelpers:
     def test_matches_simple_selector_tag(self):
-        from an_web.actions.extract import _matches_simple_selector
+        from xgen_an_web.actions.extract import _matches_simple_selector
 
         class MockEl:
             tag = "div"
@@ -1053,7 +1053,7 @@ class TestExtractHelpers:
         assert _matches_simple_selector(MockEl(), "span") is False
 
     def test_matches_simple_selector_class(self):
-        from an_web.actions.extract import _matches_simple_selector
+        from xgen_an_web.actions.extract import _matches_simple_selector
 
         class MockEl:
             tag = "div"
@@ -1063,7 +1063,7 @@ class TestExtractHelpers:
         assert _matches_simple_selector(MockEl(), ".baz") is False
 
     def test_matches_simple_selector_id(self):
-        from an_web.actions.extract import _matches_simple_selector
+        from xgen_an_web.actions.extract import _matches_simple_selector
 
         class MockEl:
             tag = "span"
@@ -1073,7 +1073,7 @@ class TestExtractHelpers:
         assert _matches_simple_selector(MockEl(), "#other") is False
 
     def test_matches_simple_selector_tag_and_class(self):
-        from an_web.actions.extract import _matches_simple_selector
+        from xgen_an_web.actions.extract import _matches_simple_selector
 
         class MockEl:
             tag = "h2"
@@ -1083,7 +1083,7 @@ class TestExtractHelpers:
         assert _matches_simple_selector(MockEl(), "h1.title") is False
 
     def test_matches_wildcard(self):
-        from an_web.actions.extract import _matches_simple_selector
+        from xgen_an_web.actions.extract import _matches_simple_selector
 
         class MockEl:
             tag = "anything"

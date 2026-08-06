@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pytest
-from an_web.tracing.logs import (
+from xgen_an_web.tracing.logs import (
     StructuredLogger, LogLevel, LogRecord, ActionLogger, get_logger,
 )
 

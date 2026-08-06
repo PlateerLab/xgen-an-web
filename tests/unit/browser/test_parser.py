@@ -1,8 +1,8 @@
 """Unit tests for HTML parser bridge."""
 from __future__ import annotations
 
-from an_web.browser.parser import parse_html
-from an_web.dom.nodes import CommentNode, Document, Element, TextNode
+from xgen_an_web.browser.parser import parse_html
+from xgen_an_web.dom.nodes import CommentNode, Document, Element, TextNode
 
 
 class TestParseHtmlBasic:
@@ -314,7 +314,7 @@ class TestCommentPreservation:
         assert "line1" in comments[0].data and "line2" in comments[0].data
 
     def test_comment_serialized_to_v8_mirror(self):
-        from an_web.js.bridge import _inner_html, marshal_element
+        from xgen_an_web.js.bridge import _inner_html, marshal_element
         doc = parse_html('<div id="r"><!--$--><p>x</p></div>')
         div = next(el for el in doc.iter_elements() if el.tag == "div")
         marshaled = marshal_element(div)
