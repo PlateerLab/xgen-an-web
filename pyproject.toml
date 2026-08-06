@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "xgen-an-web"
-version = "0.10.0"
+version = "0.11.0"
 description = "AN-Web: AI-Native Web Browser Engine — executes the web as an actionable state machine for AI agents"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -29,6 +29,9 @@ dependencies = [
     "pydantic>=2.7.0",
     "cssselect>=1.2.0",
     "mini-racer>=0.12.4",
+
+    # ── 기능 extras 흡수 (XGEN 은 기능을 옵션으로 두지 않는다) ────────
+    "mcp>=1.2.0",
 ]
 
 [project.optional-dependencies]
@@ -39,9 +42,6 @@ dev = [
     "respx>=0.22.0",
     "mypy>=1.10.0",
     "ruff>=0.4.0",
-]
-mcp = [
-    "mcp>=1.2.0",
 ]
 
 [project.scripts]
